@@ -1,0 +1,6 @@
+.search ol {padding:0;margin:0;}
+.search li {margin-bottom:10px;}
+.search li a, .search li p {}
+.search li a.direct {font-size:.8em;}
+.search .pagination {float:right;overflow:hidden;}
+.search .pagination li {float:left;list-style:none;margin-left:4px;}

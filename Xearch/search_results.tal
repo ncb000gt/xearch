@@ -1,0 +1,20 @@
+<div xmlns:tal="http://axiomstack.com/tale" class="search">
+  <p tal:if="!results || results.length === 0" tal:content="(this.no_results||'No results found, try your query again.')"></p>
+  <div tal:if="results &amp;&amp; results.length !== 0">
+    <p tal:text="$">Your search for "${query}" gave ${count} results.</p>
+    <ol class="results">
+      <li tal:repeat="r: results">
+	<a tal:attr="href: r.getURI()" tal:content="(r.title || r.id)"></a>
+	<p tal:content-if="r.genDesc?r.genDesc():undefined"></p>
+	<br tal:if="!r.genDesc || !r.genDesc()" />
+	<a class="direct" tal:attr="href: r.getURI()" tal:content="r.getURI()"></a>
+      </li>
+    </ol>
+    
+    <ul class="pagination" tal:var="p: parseInt((req.get('p') || 0), 10)">
+      <li tal:if="p !== 0"><a tal:attr="href: this.getURI()+'?q='+query+'&amp;p='+(p-1)" title="Previous">&lt;</a></li>
+      <li tal:repeat="page: range(pages)"><a tal:omit="page == p" tal:attr="href: this.getURI()+'?q='+query+'&amp;p='+page" tal:content="page+1"></a></li>
+      <li tal:if="p !== (pages-1) &amp;&amp; pages !== 1"><a tal:attr="href: this.getURI()+'?q='+query+'&amp;p='+(p+1)" title="Next">&gt;</a></li>
+    </ul>
+  </div>
+</div>

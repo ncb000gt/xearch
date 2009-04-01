@@ -1,0 +1,3 @@
+<prototypes>
+  <prototype name="Xearch" displayname="Xearch Search" addable="true" deletable="true" editable="true" />
+</prototypes>

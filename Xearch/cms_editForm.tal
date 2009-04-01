@@ -1,0 +1,133 @@
+<div xmlns:tal="http://axiomstack.com/tale"><div class="subform">
+<fieldset class="ax-textbox ax-title" id="ax-title">
+		<div><div class="error_message">hidden error message </div>
+		<label for="title">Title</label>
+		<input id="title" name="title" onkeyup="dojo.widget.byNode(dojo.byId('_location').parentNode).populate(this.value)" tal:attr="value: this.title" type="text"/>
+		</div>
+		<script type="text/javascript">//
+        dojo.event.kwConnect({ srcObj: dojo.byId('title'),
+							   srcFunc: 'onchange',
+  							   adviceFunc: function(evt){ axiom.dirtyProps[ evt.target['name'] ] = true; }
+  							 });
+
+    //</script>
+
+	</fieldset>
+
+ <fieldset class="ax-_location" id="ax-_location">
+        <div><div class="error_message">hidden error message </div>
+        <label for="_location_widget">URL</label>
+        <div id="_location_widget">Loading...</div>
+        <script tal:text="$" type="text/javascript">//
+
+	dojo.require("axiom.widget.LocationField");
+	var loc = dojo.widget.createWidget('axiom:LocationField',
+									   {appPath:axiom.appPath,
+										initialValue: '${this._parent.getPath()}',
+										parentHref:'${this._parent.getURI()}',
+										href:'${this.getURI()}/',
+										objectId:'${this.id}',
+										parentTypes: ${this.parentTypesJSON()}},
+									   dojo.byId('_location_widget'));
+
+	//</script>
+    </div>
+		</fieldset>
+<fieldset class="ax-select ax-ptypes" id="ax-ptypes">
+		<div> <div class="error_message">hidden error message</div>
+		<label for="ptypes">Prototypes to Include in Search</label>
+        <select id="multiselect_ptypes" multiple="true" name="ptypes" onchange="window.ms_ptypes.update(this);axiom.dirtyProps['ptypes']=true;" tal:attr="value: this.ptypes">
+		
+        <option tal:attr="value: item[0], selected: (data.item[0]==this.ptypes)?'true':undefined" tal:content="item[1]" tal:repeat="item: this.getPrototypeList()"/>
+		</select>
+		<input id="ptypes" name="ptypes" type="hidden" value=""/><script tal:text="$" type="text/javascript">//
+    window.ms_ptypes = {
+		value:'${this.ptypes}',
+		hiddenInput:dojo.byId('ptypes'),
+		init:function(){
+			var select = dojo.byId('multiselect_ptypes');
+			//alert(select);
+			var opts = select.getElementsByTagName("option");
+			var vals = this.value.split(",");
+			for(var i in opts) {
+				if(dojo.lang.inArray(vals,opts[i].value)) {
+					opts[i].selected = true;
+				}
+			}
+			this.update(select);
+		},
+		update:function(select){
+			var opts = select.getElementsByTagName("option");
+			var vals = [];
+			for(var i in opts) {
+				if(opts[i].selected){
+					vals.push(opts[i].value);
+				}
+			}
+			this.value = vals.join(",");
+			this.hiddenInput.value = this.value;
+		}
+	};
+    ms_ptypes.init();
+    //</script></div>
+     	<script type="text/javascript">//
+		dojo.event.kwConnect({ srcObj: dojo.byId('ptypes'),
+							   srcFunc: 'onchange',
+  							   adviceFunc: function(evt){ axiom.dirtyProps[ evt.target['name'] ] = true; }
+  							 });
+
+	//</script>
+    </fieldset>
+<fieldset class="ax-textarea ax-no_results" id="ax-no_results">
+		<div> <div class="error_message">hidden error message</div>
+      	<label for="no_results">No Results Message</label>
+		<textarea cols="50" id="no_results" name="no_results" rows="5" tal:content="this.no_results|| ''">.</textarea>
+		</div>
+		<script type="text/javascript">//
+
+    dojo.event.kwConnect({ srcObj: dojo.byId('no_results'),
+		                   srcFunc: 'onchange',
+  						   adviceFunc: function(evt){ axiom.dirtyProps[ evt.target['name'] ] = true; }
+  						 });
+
+	//</script>
+	</fieldset><fieldset class="ax-textbox ax-results_per_page" id="ax-results_per_page">
+		<div><div class="error_message">hidden error message </div>
+		<label for="results_per_page">Number of Results Per Page</label>
+		<input id="results_per_page" name="results_per_page" tal:attr="value: this.results_per_page" type="text"/>
+		</div>
+		<script type="text/javascript">//
+        dojo.event.kwConnect({ srcObj: dojo.byId('results_per_page'),
+							   srcFunc: 'onchange',
+  							   adviceFunc: function(evt){ axiom.dirtyProps[ evt.target['name'] ] = true; }
+  							 });
+
+    //</script>
+
+	</fieldset>
+<fieldset class="ax-checkbox ax-search_from_parent" id="ax-search_from_parent">
+		<div> <div class="error_message">hidden error message</div>
+		<label for="search_from_parent_cb">Check to Constrain Search to Parent and Below?</label>
+		<input class="cb" id="search_from_parent_cb" onclick="if(this.checked) dojo.byId('search_from_parent').value='true'; else dojo.byId('search_from_parent').value='false'; axiom.dirtyProps['search_from_parent']=true;" tal:attributes="checked this/search_from_parent" type="checkbox"/>
+		<input id="search_from_parent" name="search_from_parent" tal:attr="value: this.search_from_parent? true : false" type="hidden"/>
+		</div>
+		</fieldset>
+
+<fieldset  class="ax-select ax-search_profile" id="ax-search_profile">
+		<div> <div class="error_message">hidden error message</div>
+		<label for="search_profile">Select the Search Profile to Use</label>
+        <select id="search_profile" name="search_profile" xmlns:tal="http://axiomstack.com/tale" tal:attr="value: this.search_profile">
+		<option value="">--Choose One--</option>
+        <option tal:attr="value: item[0], selected: (data.item[0]==this.search_profile)?'true':undefined" tal:content="item[1]" tal:repeat="item: this.getSearchProfileList()"/>
+		</select>
+		</div>
+     	<script type="text/javascript">//
+		dojo.event.kwConnect({ srcObj: dojo.byId('search_profile'),
+							   srcFunc: 'onchange',
+  							   adviceFunc: function(evt){ axiom.dirtyProps[ evt.target['name'] ] = true; }
+  							 });
+
+	//</script>
+    </fieldset>
+
+</div></div>
